@@ -1,4 +1,3 @@
-# run:  pytest main.py > results.txt
 import pytest
 import sqlalchemy
 import urllib

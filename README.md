@@ -26,10 +26,15 @@ In SQL Server Configuration Manager go to SQL Server Network Configuration-> Pro
 ![image](https://user-images.githubusercontent.com/104168878/232732411-32583cc1-2e3c-4b48-a897-147d62bbc3d7.png)
 ![image](https://user-images.githubusercontent.com/104168878/232732457-cb4bb37b-a300-42dc-b23c-70c0963d7fbd.png)
 
-Run test with command: pytest main.py (if you added python and roboframewok to PATH);
+5. Run test with command: pytest main.py (if you added python and roboframewok to PATH);
 python -m pytest main.py (if you don't added python and roboframewok to PATH)
 All tests should pass:
 
 ![image](https://user-images.githubusercontent.com/104168878/232733174-5aedc41b-bb54-4623-805f-3093b2c690d4.png)
+
+6. To generate a report you need to run command:
+ python -m pytest main.py --html=pytest_report.html --self-contained-html
+
+![image](https://user-images.githubusercontent.com/104168878/232889152-c05a522b-34f8-4047-aa17-05aa0fc678d3.png)
 
 That's it! Thank you for your attention!

@@ -1,0 +1,91 @@
+Tables: 
+-[hr].[locations]
+-[hr].[employees]
+-[hr].[jobs]
+
+
+Test case 1. Check duplicates in job_title
+#[hr].[jobs]
+1. Connect to [TRN] database via MSQLSMS
+2. Click 'New Query'
+3. Run followe query: 'SELECT count(*) FROM (
+						SELECT [job_title], 
+								[min_salary], 
+								[max_salary], 
+								ROW_NUMBER() OVER(partition by [job_title] order by [min_salary], [max_salary] asc) as row_num
+						FROM [hr].[jobs]
+						) tmp_tbl 
+						WHERE row_num > 1
+					'
+Expected result: count of duplicates
+4. Expected result: 0
+
+Test case 2. Average of min_salary, max_salary
+#[hr].[jobs]
+1. Connect to [TRN] database via MSQLSMS
+2. Click 'New Query' 
+3. Run followe query: 'SELECT 'ALL' job_titles, 
+							AVG([min_salary]) avg_min, 
+							AVG([max_salary]) avg_max 
+						FROM [TRN].[hr].[jobs]
+					'
+Expected result: result set with job_titles, avg_min, avg_max columns
+4. Check if avg_min and avg_max >=0. Expected: avg_min and avg_max >=0
+5. Check if avg_min < avg_max. Expected: avg_min < avg_max
+
+
+
+Test case 3. Check count of employees in employees
+#[hr].[employees]
+1. Connect to [TRN] database via MSQLSMS
+2. Click 'New Query' 
+3. Run followe query: 'SELECT 'Count of employees', count(employee_id) cnt from [hr].[employees]'
+Expected result: result set with cnt column
+4. Check if Count of employees. Expected result: Count of employees is 40
+
+
+Test case 4. Check if data stored in required format
+#[hr].[employees]
+1. Connect to [TRN] database via MSQLSMS
+2. Click 'New Query' 
+3. Run followe query: 
+					'
+					SELECT * 
+					FROM [hr].[employees] 
+					WHERE email NOT LIKE '%@%.org' 
+						OR phone_number NOT LIKE '%.%.%'
+						OR hire_date NOT LIKE '____-__-__'
+					'
+Expected result: query executed successfully 
+4. Check if result exist any rows. Expecte result: result don't exist any rows as data stored in required format
+
+
+Test case 5. Check if require columns consist null value
+#[hr].[locations]
+1. Connect to [TRN] database via MSQLSMS
+2. Click 'New Query' 
+3. Run followe query: 	'
+						SELECT * 
+						FROM [hr].locations 
+						WHERE street_address IS NULL 
+						OR postal_code IS NULL 
+						OR city is null 
+						OR state_province IS NULL 
+						OR country_id IS NULL
+						'
+Expected result: query executed successfully 
+4. Check if result exist any new bad rows. Expected result: 1 row in result 
+
+
+Test case 6. Check if data from required countries 
+#[hr].[locations]
+1. Connect to [TRN] database via MSQLSMS
+2. Click 'New Query' 
+3. Run followe query: 
+					'
+					SELECT * 
+					FROM [hr].locations 
+					WHERE country_id NOT IN ('US', 'CA', 'UK', 'DE')
+					'
+Expected result: query executed successfully 
+4. Check if result exist any rows. Expecte result: result don't exist any rows as data only from required countries 
